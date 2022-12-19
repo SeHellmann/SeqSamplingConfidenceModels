@@ -48,12 +48,31 @@ descr_Data_corr <- Data %>%
   left_join(temp1, by=c("condition", "correct")) %>%
   left_join(temp2, by=c("condition", "correct"))
 
+temp <- Data %>% group_by(participant, rating, correct) %>%
+  summarise(meanRT = mean(rt)) %>%
+  summarySEwithin(measurevar = "meanRT", idvar = "participant", withinvars = c("rating", "correct"))%>%
+  mutate(correct=factor(correct, levels=c(0,1), labels=c("Wrong", "Correct"))) %>%
+  select(-meanRT)
+
+descr_Data_corr_rating <- Data %>% 
+  group_by(participant, rating, correct) %>%
+  summarise(MeanRT = mean(rt)) %>%
+  group_by(correct, rating) %>%
+  summarise(MeanRT = mean(MeanRT)) %>% 
+  ungroup() %>%
+  mutate(correct=factor(correct, levels=c(0,1), labels=c("Wrong", "Correct")),
+         rating = as.factor(rating)) %>%
+  left_join(temp, by=c("rating", "correct")) 
+
+
+
+
 descr_Acc <- ggplot(descr_DataAcc,aes(x=condition, y=Accuracy))+
   geom_errorbar(aes(ymin=Accuracy-se, ymax=Accuracy+se), size=0.4)+
   geom_point(size=2)+geom_line(aes(x=as.numeric(condition), y=Accuracy),size=1)+
   scale_x_discrete(name="Coherence [%]")+
   theme_bw()+
-  theme(plot.margin = margin(0, 0.01, 0, 0.5, "cm"),
+  theme(plot.margin = margin(0, 0.3, 0.3, 0.5, "cm"),
         text = element_text(size=9, family="Times"),
         axis.text = element_text(size=9, family="Times", color="black"),
         axis.title.y = element_text( angle=90),
@@ -82,7 +101,7 @@ descr_Rating <- ggplot(data = descr_Data_corr,aes(x=condition, y=MeanRating))+
   scale_shape_manual(breaks=c("Correct", "Wrong"), values=c(21, 17)) +
   scale_color_manual(breaks=c("Correct", "Wrong"), values=two_colors)+
   theme_bw()+
-  theme(plot.margin = margin(0, 0.01, 0, 0.5, "cm"),
+  theme(plot.margin = margin(0, 0.3, 0.3, 0.5, "cm"),
         text = element_text(size=9, family="Times"),
         axis.text = element_text(size=9, family="Times", color="black"),
         axis.title.y = element_text( angle=90),
@@ -101,7 +120,7 @@ descr_Rating
 RT_ylimits <- c(min(descr_Data_corr$MeanRT - descr_Data_corr$seRT),
                 max(descr_Data_corr$MeanRT + descr_Data_corr$seRT))
 
-descr_RT <- ggplot(data = descr_Data_corr,aes(x=condition, y=MeanRT))+
+descr_RT_bycond <- ggplot(data = descr_Data_corr,aes(x=condition, y=MeanRT))+
   # geom_point(data = descr_Data,size=2)+
   # geom_line(data = descr_Data,aes(x=as.numeric(condition), y=MeanRT),size=1.3)+
   # geom_errorbar(data = descr_Data, aes(ymin=MeanRT-RT_SER, ymax=MeanRT+RT_SER))+
@@ -113,7 +132,7 @@ descr_RT <- ggplot(data = descr_Data_corr,aes(x=condition, y=MeanRT))+
   scale_shape_manual(breaks=c("Correct", "Wrong"), values=c(21, 17)) +
   scale_color_manual(breaks=c("Correct", "Wrong"), values=two_colors)+
   theme_bw()+
-  theme(plot.margin = margin(0, 0.01, 0, 0.5, "cm"),
+  theme(plot.margin = margin(0, 0.3, 0.3, 0.5, "cm"),
         text = element_text(size=9, family="Times"),
         axis.text = element_text(size=9, family="Times", color="black"),
         axis.title.y = element_text( angle=90),
@@ -125,53 +144,51 @@ descr_RT <- ggplot(data = descr_Data_corr,aes(x=condition, y=MeanRT))+
         legend.key = element_blank(),
         legend.key.width=unit(2.5,"line"))+
   coord_cartesian(xlim = c(1,5),ylim=RT_ylimits,  clip = 'off')+
-  annotate("text", label="C", size=14/.pt, x= -0.5, y=RT_ylimits[1]+1.02*diff(RT_ylimits),
+  annotate("text", label="C", size=14/.pt, x= -0.5, y=RT_ylimits[1]+1.08*diff(RT_ylimits),
            hjust=1, vjust=1, family="Times", fontface="bold")
-descr_RT
+descr_RT_bycond
 
-Ps <- ggarrange(descr_Acc,descr_Rating,descr_RT, ncol=3, common.legend = TRUE, legend="bottom")
+
+RT_ylimits <- c(min(descr_Data_corr_rating$MeanRT - descr_Data_corr_rating$se),
+                max(descr_Data_corr_rating$MeanRT + descr_Data_corr_rating$se))
+descr_RT_byrating <- ggplot(data = descr_Data_corr_rating,aes(x=rating, y=MeanRT))+
+  # geom_point(data = descr_Data,size=2)+
+  # geom_line(data = descr_Data,aes(x=as.numeric(rating), y=MeanRT),size=1.3)+
+  # geom_errorbar(data = descr_Data, aes(ymin=MeanRT-RT_SER, ymax=MeanRT+RT_SER))+
+  geom_line(data=descr_Data_corr_rating, aes(color=as.factor(correct), x=as.numeric(rating), y=MeanRT),size=1)+
+  geom_errorbar(data=descr_Data_corr_rating, aes(ymin=MeanRT-se, ymax=MeanRT+se), width=0.5, size=0.4)+
+  geom_point(data=descr_Data_corr_rating, aes(shape=as.factor(correct)), size=2, fill="white")+
+  scale_x_discrete(name="Confidence", breaks=1:5,
+                   labels=c("0-20","20-40", "40-60","60-80", "80-100"))+
+  scale_y_continuous(name="Mean response time [s]")+
+  scale_shape_manual(breaks=c("Correct", "Wrong"), values=c(21, 17)) + 
+  scale_color_manual(breaks=c("Correct", "Wrong"), values=two_colors)+
+  theme_bw()+
+  theme(plot.margin = margin(0, 0.3, 0.3, 0.5, "cm"),
+        text = element_text(size=9, family="Times"),
+        axis.text = element_text(size=9, family="Times", color="black"),
+        axis.title.y = element_text( angle=90),
+        panel.grid.minor = element_blank(),  # switch off minor gridlines
+        panel.grid.major = element_blank(),
+        strip.text = element_text(size=9),
+        legend.position="none", #legend.position = c(.005, 0.995), legend.justification = c(0,1), #legend.position = "bottom"
+        legend.title = element_blank(), 
+        legend.key = element_blank(),
+        legend.key.width=unit(2.5,"line"))+
+  coord_cartesian(xlim = c(1,5),ylim=RT_ylimits,  clip = 'off')+  
+  annotate("text", label="D", size=14/.pt, x= -0.5, y=RT_ylimits[1]+1.08*diff(RT_ylimits), 
+           hjust=1, vjust=1, family="Times", fontface="bold")
+descr_RT_byrating
+
+
+
+
+Ps <- ggarrange(descr_Acc,descr_Rating,descr_RT_bycond, descr_RT_byrating, 
+                nrow=2,ncol=2, common.legend = TRUE, legend="bottom")
+Ps
 ggsave(plot = Ps,
        file = "figures/descr2.png",
-       width = 17.62, height=6, units = "cm", dpi=1200)
+       width = 17.62/1.5, height=11, units = "cm", dpi=1200)
 ggsave(plot = Ps,
        file = "figures/descr2.eps",
-       width = 17.62, height=6, units = "cm", dpi=1200, device = cairo_ps)
-
-
-
-
-
-
-
-###  Descriptive Behavioral measures    ###
-# #### Descriptive plots for different sessions              #####
-# AccSessions <- Data %>% select(participant, session, condition, correct) %>% 
-#   group_by(participant, session, condition) %>%
-#   mutate(nrows=n()) %>%
-#   summarise(acc = mean(correct),
-#             SER = sd(correct)/sqrt(n()))
-# pd <- position_dodge(0.1)
-# ggplot(AccSessions, aes(x=condition, y=acc, color=as.factor(session), group=session))+
-#   geom_line(position=pd)+
-#   geom_errorbar(aes(ymin=acc-SER, ymax=acc+SER), colour="black", width=.1,position =pd) +
-#   facet_wrap(~participant)
-# 
-# AccSessions$session <- as.factor(AccSessions$session)
-# AccSessions$participant <- as.factor(AccSessions$participant)
-# 
-# AccSessions$participant <- as.factor(AccSessions$participant)
-# 
-# anova(lm(data=AccSessions, acc~session))
-# anova(lm(data=AccSessions, acc~participant*condition+session))
-# anova(lm(data=AccSessions, acc~participant*condition+session),
-#       lm(data=AccSessions, acc~participant*condition))
-# 
-# BFfull <- anovaBF(acc~condition*participant+session, data=AccSessions)
-# BFrestr <- anovaBF(acc~condition*participant, data=AccSessions)
-# BFrestr/BFfull
-#  
-# anovaBF(acc~session, data=AccSessions)
-# generalTestBF(acc~condition+participant+session, data=AccSessions)
-# 
-# AccSessions %>% group_by(session) %>%
-#   summarise(acc = mean(acc))
+       width = 17.62/1.5, height=11, units = "cm", dpi=1200, device = cairo_ps)
