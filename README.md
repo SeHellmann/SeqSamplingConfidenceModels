@@ -4,13 +4,13 @@
 
 # Modelling Reaction Time and Confidence Distributions in Decision Making
 
-This repository contains data as well as code used in the paper **Simultaneous modeling of choice, confidence and response time in visual perception** (Hellmann, S., Zehetleitner, M., & Rausch, M. (in press, *Psychological Review*). 
-[Preregistration on OSF](https://osf.io/x548k/) was developed and published with another data set from a previous study (Experiment 2 in Rausch, Hellmann, & Zehetleitner (2018). The other experiments are available in this repository. The most recent author manuscript of the article is available here: [https://osf.io/mrh78](https://osf.io/mrh78). 
+This repository contains data as well as code used in the paper **Simultaneous modeling of choice, confidence and response time in visual perception** (Hellmann, S., Zehetleitner, M., & Rausch, M., 2023, *Psychological Review*, [doi: 10.1037/rev0000411](https://doi.org/10.1037/rev0000411)). 
+[Preregistration on OSF](https://osf.io/x548k/) was developed and published with another data set from a previous study (Experiment 2 in Rausch, Hellmann, & Zehetleitner (2018). The other experiments are available in this repository. The most recent author manuscript of the article is available here: [https://osf.io/mzfkr](https://osf.io/mzfkr). 
 
 ## Structure:
 
 -   dynWEV-source package file (.tar.gz)
--   dynConfiR-source package file (.tar.gz) (for the additional analyses for review). This is the 0.0.1 version of the package with likelihood and fitting functions, which is now available on [CRAN](https://cran.r-project.org/web/packages/dynConfiR/index.html). 
+-   dynConfiR-source package file (.tar.gz) (for the additional analyses for review). This is the 0.0.1 version of the package with likelihood and fitting functions, which is now available on [GitHub](https://github.com/SeHellmann/dynConfiR). 
 -   folders for the experiments analyzed in the study. The two motion discrimination datasets from experiment 2 are again included in sub-folders (and have individual files for the first three bullets). Following files are in the experiment folders:
     -   a *experiment* folder containing the files for running the experiments in Psychopy
     -   a .csv file ('data*Experiment*.csv') containing the raw data
@@ -56,7 +56,7 @@ As some R packages are under constant development we included the file sessionIn
 
 ### References
 
-Rausch, M., Hellmann, S. & Zehetleitner, M. Confidence in masked orientation judgments is informed by both evidence and visibility. Atten Percept Psychophys 80, 134-154 (2018). <https://doi.org/10.3758/s13414-017-1431-5>
+Hellmann, S., Zehetleitner, M., & Rausch, M. (2023). Simultaneous modeling of choice, confidence, and response time in visual perception. Psychological Review. Advance online publication. <https://doi.org/10.1037/rev0000411>
 
 
 ## Contact
