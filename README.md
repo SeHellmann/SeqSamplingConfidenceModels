@@ -38,8 +38,8 @@ This repository contains data as well as code used in the paper **Simultaneous m
 
 <!-- -->
 
-    install.packages("dynWEV_0.0.tar.gz", type = "source", dependencies=TRUE,repos="http://a.cran.mirror")
-    install.packages("dynWEV_0.0.1.tar.gz", type = "source", dependencies=TRUE,repos="http://a.cran.mirror")
+    install.packages("dynWEV_0.0.tar.gz", type = "source", dependencies=TRUE,repos=NULL)
+    install.packages("dynConfiR_0.0.1.tar.gz", type = "source", dependencies=TRUE,repos=NULL)
 
 -   If necessary, install required packages:
 
