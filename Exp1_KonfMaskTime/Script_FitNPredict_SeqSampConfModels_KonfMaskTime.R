@@ -20,6 +20,7 @@ script_path <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(script_path)
 {
   library(plyr)
+  library(BayesFlow)
   library(snow)
   library(doSNOW)
   library(tidyverse)
