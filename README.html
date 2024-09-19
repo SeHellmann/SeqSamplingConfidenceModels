@@ -297,23 +297,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -431,30 +425,48 @@ postdecisional accumulation time</li>
 </div>
 <div id="usage" class="section level2">
 <h2>Usage:</h2>
+<div id="setup-the-environment" class="section level3">
+<h3>Setup the environment:</h3>
 <ul>
-<li>Start R with package file in working directory</li>
+<li>Start with a completely new R 4.0.5 installation</li>
+<li>On windows, install rtools40 (<a href="https://cran.r-project.org/bin/windows/Rtools/rtools40.html" class="uri">https://cran.r-project.org/bin/windows/Rtools/rtools40.html</a>)</li>
+<li>Install the renv package using
+<code>install.packages(&quot;renv&quot;)</code></li>
+<li>Change the working directory to the project directory
+<code>setwd(&#39;~/Material_for_SeqSamplingModelsOfChoiceConfRT&#39;)</code></li>
+<li>Use <code>renv::restore(&#39;renv.lock&#39;)</code> to install all packages
+with their respective version. Note, that this will install the packages
+in your default library of your R-4.0.5 installation!</li>
+<li>Install the local packages:</li>
 </ul>
-<!-- -->
-<pre><code>install.packages(&quot;dynWEV_0.0.tar.gz&quot;, type = &quot;source&quot;, dependencies=TRUE,repos=&quot;http://a.cran.mirror&quot;)
-install.packages(&quot;dynWEV_0.0.1.tar.gz&quot;, type = &quot;source&quot;, dependencies=TRUE,repos=&quot;http://a.cran.mirror&quot;)</code></pre>
-<ul>
-<li>If necessary, install required packages:</li>
-</ul>
-<!-- -->
-<pre><code>install.packages(c(&quot;plyr&quot;, &quot;snow&quot;, &quot;doSNOW&quot;, &quot;BayesFactor&quot;, &quot;tidyverse&quot;, &quot;RColorBrewer&quot;, &quot;gridExtra&quot;))</code></pre>
-<ul>
-<li>To redo the whole analyses, run
-‘Script_FitNPredict_SeqSampConfModels_<em>Experiment</em>.R’ in the
-respective experiment folder</li>
-<li>Use the saved results in ‘collected_fitsNpredicts.RData’ in the
-respective experiment folders for all other analyses</li>
-</ul>
+<pre><code>    install.packages(&#39;dynWEV_0.0.tar.gz&#39;, repos = NULL, type = &#39;source&#39;)
+    install.packages(&#39;dynConfiR_0.0.1.tar.gz&#39;, repos=NULL, type = &#39;source&#39;)</code></pre>
 </div>
-<div id="compatibility-for-package-versions" class="section level2">
-<h2>Compatibility for package versions</h2>
-<p>As some R packages are under constant development we included the
-file sessionInfo.txt with the necessary information about versions of R
-packages used for the original analyses.</p>
+<div id="redo-whole-analysis" class="section level3">
+<h3>Redo whole analysis:</h3>
+<ul>
+<li>To redo the whole analyses with modelling fitting:
+<ul>
+<li>remove the files with the results ‘collected_fitsNpredicts.RData’ in
+the respective experiment folder</li>
+<li>run ‘Script_FitNPredict_SeqSampConfModels_<em>Experiment</em>.R’
+from within the respective experiment folder</li>
+</ul></li>
+<li>To reuse the quantitative model comparison and produce the figures,
+using the already computed model fits, simply use the saved results in
+‘collected_fitsNpredicts.RData’ in the respective experiment folders for
+all other analyses</li>
+<li>Note that the scripts ‘Script_ModelMimikryAnalysis.R’ always run the
+recovery analysis, irrespective of whether saved results are present or
+not and that this may take considerable time!</li>
+</ul>
+<!--
+
+## Compatibility for package versions
+
+As some R packages are under constant development we included the file sessionInfo.txt with the necessary information about versions of R packages used for the original analyses.
+ -->
+</div>
 <div id="references" class="section level3">
 <h3>References</h3>
 <p>Hellmann, S., Zehetleitner, M., &amp; Rausch, M. (2023). Simultaneous
@@ -464,7 +476,7 @@ Psychological Review. Advance online publication. <a href="https://doi.org/10.10
 </div>
 <div id="contact" class="section level2">
 <h2>Contact</h2>
-<p>For comments, remarks, and questions please contact me: <a href="mailto:sebastian.hellmann@ku.de" class="email">sebastian.hellmann@ku.de</a></p>
+<p>For comments, remarks, and questions please contact me: <a href="mailto:sebastian.hellmann@tum.de" class="email">sebastian.hellmann@tum.de</a></p>
 </div>
 </div>
 

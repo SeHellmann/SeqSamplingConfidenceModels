@@ -34,26 +34,33 @@ This repository contains data as well as code used in the paper **Simultaneous m
 
 ## Usage:
 
--   Start R with package file in working directory
+### Setup the environment:
 
-<!-- -->
+-   Start with a completely new R 4.0.5 installation
+-   On windows, install rtools40 (https://cran.r-project.org/bin/windows/Rtools/rtools40.html)
+-   Install the renv package using `install.packages("renv")`
+-   Change the working directory to the project directory `setwd('~/Material_for_SeqSamplingModelsOfChoiceConfRT')`
+-   Use `renv::restore('renv.lock')` to install all packages with their respective version. 
+    Note, that this will install the packages in your default library of your R-4.0.5 installation!
+-   Install the local packages:
+```
+    install.packages('dynWEV_0.0.tar.gz', repos = NULL, type = 'source')
+    install.packages('dynConfiR_0.0.1.tar.gz', repos=NULL, type = 'source')
+```
+### Redo whole analysis:
+-   To redo the whole analyses with modelling fitting:
+    -   remove the files with the results 'collected_fitsNpredicts.RData' in the respective experiment folder
+    -   run 'Script_FitNPredict_SeqSampConfModels\_*Experiment*.R' from within the respective experiment folder
+-   To reuse the quantitative model comparison and produce the figures, using the already computed model fits, simply use the saved results in 'collected_fitsNpredicts.RData' in the respective experiment folders for all other analyses
+-   Note that the scripts 'Script_ModelMimikryAnalysis.R' always run the recovery analysis, irrespective of whether saved results are present or not and that this may take considerable time!
 
-    install.packages("dynWEV_0.0.tar.gz", type = "source", dependencies=TRUE,repos=NULL)
-    install.packages("dynConfiR_0.0.1.tar.gz", type = "source", dependencies=TRUE,repos=NULL)
-
--   If necessary, install required packages:
-
-<!-- -->
-
-    install.packages(c("plyr", "snow", "doSNOW", "BayesFactor", "tidyverse", "RColorBrewer", "gridExtra"))
-
--   To redo the whole analyses, run 'Script_FitNPredict_SeqSampConfModels\_*Experiment*.R' in the respective experiment folder
--   Use the saved results in 'collected_fitsNpredicts.RData' in the respective experiment folders for all other analyses
+<!--
 
 ## Compatibility for package versions
 
 As some R packages are under constant development we included the file sessionInfo.txt with the necessary information about versions of R packages used for the original analyses.
-
+ -->
+ 
 ### References
 
 Hellmann, S., Zehetleitner, M., & Rausch, M. (2023). Simultaneous modeling of choice, confidence, and response time in visual perception. Psychological Review. Advance online publication. <https://doi.org/10.1037/rev0000411>
@@ -61,4 +68,4 @@ Hellmann, S., Zehetleitner, M., & Rausch, M. (2023). Simultaneous modeling of ch
 
 ## Contact
 
-For comments, remarks, and questions please contact me: [sebastian.hellmann\@ku.de](mailto:sebastian.hellmann@ku.de){.email}
+For comments, remarks, and questions please contact me: [sebastian.hellmann\@tum.de](mailto:sebastian.hellmann@tum.de){.email}
